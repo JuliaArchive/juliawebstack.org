@@ -1,7 +1,7 @@
 DOC_TEMPLATE=template.html
 DOC_TARGET=index.html
 
-all: Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
+all: clean Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
 
 readmeurl = "https://raw.github.com/hackerschool/$(1).jl/master/docs/$(1).md"
 
