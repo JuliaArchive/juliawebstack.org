@@ -1,25 +1,54 @@
 DOC_TEMPLATE=template.html
 DOC_TARGET=index.html
 
-all: morsel
+all: Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
 
 #
-# $1: the location of the markdown file to be compiled
-# $2: the directive to be replaced in index.html
+# $(1) the location of the markdown file to be compiled
+# $(2) the template directive
 #
 define compilemd
 	$(shell if [ ! -f $(DOC_TARGET) ]; then
 		cp $(DOC_TEMPLATE) $(DOC_TARGET);
 	fi)
-	$(eval TMP := $(shell mktemp 'tmp.html.XXXXX'))
-	markdown $(1) > $(TMP)
-	sed -i '' -e "/$(2)/r $(TMP)" $(DOC_TARGET)
-	rm $(TMP)
+	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
+	markdown $(1) > $(HTML_TMP)
+	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
+	rm -f $(HTML_TMP)
 endef
 
-morsel:
-	$(call compilemd,tmp.md,<!--!!!morsel_content-->)
+readmeurl = "https://raw.github.com/hackerschool/$(1)/master/README.md"
+
+#
+# $(1) the GitHub repo name under the hackerschool organization
+# $(2) the template directive
+#
+define curlandcompile
+	$(eval MD_TMP := $(shell mktemp 'tmp.md.XXXXX'))
+	curl $(call readmeurl,$(1)) > $(MD_TMP)
+	$(call compilemd,$(MD_TMP),$(2))
+	rm -f $(MD_TMP)
+endef
+
+Morsel:
+	$(call curlandcompile,Morsel.jl,<!--!!!Morsel_content-->)
+
+Meddle:
+	$(call curlandcompile,Meddle.jl,<!--!!!Meddle_content-->)
+
+WebSockets:
+	$(call curlandcompile,WebSockets.jl,<!--!!!WebSockets_content-->)
+
+HttpServer:
+	$(call curlandcompile,HttpServer.jl,<!--!!!HttpServer_content-->)
+
+HttpParser:
+	$(call curlandcompile,HttpParser.jl,<!--!!!HttpParser_content-->)
+
+HttpCommon:
+	$(call curlandcompile,HttpCommon.jl,<!--!!!HttpCommon_content-->)
 
 clean:
 	rm -f tmp.html.*
+	rm -f tmp.md.*
 	rm -f $(DOC_TARGET)
