@@ -1,7 +1,7 @@
 DOC_TEMPLATE=template.html
 DOC_TARGET=index.html
 
-all: clean Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
+all: deps clean Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
 
 readmeurl = "https://raw.github.com/hackerschool/$(1).jl/master/docs/$(1).md"
 
@@ -15,7 +15,7 @@ define curlandcompile
 	fi)
 	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
 	curl -s $(call readmeurl,$(1)) \
-		| python -m markdown -x "codehilite(noclasses=True)" \
+		| ve/bin/python -m markdown -x "codehilite(noclasses=True)" \
 		> $(HTML_TMP)
 	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
 	rm -f $(HTML_TMP)
@@ -38,6 +38,10 @@ HttpParser:
 
 HttpCommon:
 	$(call curlandcompile,HttpCommon,<!--!!!HttpCommon_content-->)
+
+deps:
+	PYTHONDONTWRITEBYTECODE= virtualenv ve
+	ve/bin/pip install -r requirements.txt
 
 clean:
 	rm -f tmp.html.*
