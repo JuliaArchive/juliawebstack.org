@@ -3,20 +3,6 @@ DOC_TARGET=index.html
 
 all: Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
 
-#
-# $(1) the location of the markdown file to be compiled
-# $(2) the template directive
-#
-define compilemd
-	$(shell if [ ! -f $(DOC_TARGET) ]; then
-		cp $(DOC_TEMPLATE) $(DOC_TARGET);
-	fi)
-	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
-	markdown $(1) > $(HTML_TMP)
-	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
-	rm -f $(HTML_TMP)
-endef
-
 readmeurl = "https://raw.github.com/hackerschool/$(1)/master/README.md"
 
 #
@@ -24,10 +10,13 @@ readmeurl = "https://raw.github.com/hackerschool/$(1)/master/README.md"
 # $(2) the template directive
 #
 define curlandcompile
-	$(eval MD_TMP := $(shell mktemp 'tmp.md.XXXXX'))
-	curl $(call readmeurl,$(1)) > $(MD_TMP)
-	$(call compilemd,$(MD_TMP),$(2))
-	rm -f $(MD_TMP)
+	$(shell if [ ! -f $(DOC_TARGET) ]; then
+		cp $(DOC_TEMPLATE) $(DOC_TARGET);
+	fi)
+	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
+	curl $(call readmeurl,$(1)) | markdown > $(HTML_TMP)
+	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
+	rm -f $(HTML_TMP)
 endef
 
 Morsel:
