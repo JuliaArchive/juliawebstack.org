@@ -3,7 +3,7 @@ DOC_TARGET=index.html
 
 all: Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
 
-readmeurl = "https://raw.github.com/hackerschool/$(1)/master/README.md"
+readmeurl = "https://raw.github.com/hackerschool/$(1).jl/master/docs/$(1).md"
 
 #
 # $(1) the GitHub repo name under the hackerschool organization
@@ -14,13 +14,15 @@ define curlandcompile
 		cp $(DOC_TEMPLATE) $(DOC_TARGET);
 	fi)
 	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
-	curl -s $(call readmeurl,$(1)) | markdown > $(HTML_TMP)
+	curl -s $(call readmeurl,$(1)) \
+		| python -m markdown -x "codehilite(noclasses=True)" \
+		> $(HTML_TMP)
 	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
 	rm -f $(HTML_TMP)
 endef
 
 Morsel:
-	$(call curlandcompile,Morsel.jl,<!--!!!Morsel_content-->)
+	$(call curlandcompile,Morsel,<!--!!!Morsel_content-->)
 
 Meddle:
 	$(call curlandcompile,Meddle.jl,<!--!!!Meddle_content-->)
