@@ -79,7 +79,7 @@ a {
 }
 
 #universe {
-    margin-top: 50px;    
+    margin-top: 50px;
 }
 
 #logo img {
@@ -155,20 +155,15 @@ pre {
 }
 
 code {
+    font-size: 14px;
     border: 1px solid #ddd;
     padding: 0 .3em;
     border-radius: 2px;
 }
 
-pre code {
-    border: 0px;
-    border-radius: 0px;
+div.codehilite pre {
+    padding-left: 15px;
 }
-
-
-
-
-
 
 /* ==========================================================================
    Media Queries
