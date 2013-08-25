@@ -25,19 +25,19 @@ Morsel:
 	$(call curlandcompile,Morsel,<!--!!!Morsel_content-->)
 
 Meddle:
-	$(call curlandcompile,Meddle.jl,<!--!!!Meddle_content-->)
+	$(call curlandcompile,Meddle,<!--!!!Meddle_content-->)
 
 WebSockets:
-	$(call curlandcompile,WebSockets.jl,<!--!!!WebSockets_content-->)
+	$(call curlandcompile,WebSockets,<!--!!!WebSockets_content-->)
 
 HttpServer:
-	$(call curlandcompile,HttpServer.jl,<!--!!!HttpServer_content-->)
+	$(call curlandcompile,HttpServer,<!--!!!HttpServer_content-->)
 
 HttpParser:
-	$(call curlandcompile,HttpParser.jl,<!--!!!HttpParser_content-->)
+	$(call curlandcompile,HttpParser,<!--!!!HttpParser_content-->)
 
 HttpCommon:
-	$(call curlandcompile,HttpCommon.jl,<!--!!!HttpCommon_content-->)
+	$(call curlandcompile,HttpCommon,<!--!!!HttpCommon_content-->)
 
 clean:
 	rm -f tmp.html.*
