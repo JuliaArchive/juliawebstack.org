@@ -14,7 +14,7 @@ define curlandcompile
 		cp $(DOC_TEMPLATE) $(DOC_TARGET);
 	fi)
 	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
-	curl $(call readmeurl,$(1)) | markdown > $(HTML_TMP)
+	curl -s $(call readmeurl,$(1)) | markdown > $(HTML_TMP)
 	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
 	rm -f $(HTML_TMP)
 endef
