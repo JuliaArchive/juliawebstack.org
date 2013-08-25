@@ -3,98 +3,71 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Julia Webstack</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-        <link href='http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400italic,400,700|Cardo' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/normalize.min.css">
-        <link rel="stylesheet" href="css/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400italic,400,700|Cardo' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
 
-        <!--[if lt IE 9]>
-            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-            <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
+    <![endif]-->
+</head>
+<body>
+    <div id="universe">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-    </head>
-    <body>
-        <div id="universe">
-            <!--[if lt IE 7]>
-                <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-            <![endif]-->
-            <!-- site header, nav between package docs -->
-            <div id="topbar">
-                <header>
-                    <nav>
-                        <ul>
-                            <li class="active"><a href="#">Morsel</a></li>
-                            <li><a href="#">Meddle</a></li>
-                            <li><a href="#">WebSockets</a></li>
-                            <li><a href="#">HttpServer</a></li>
-                            <li><a href="#">HttpParser</a></li>
-                            <li><a href="#">HttpCommon</a></li>
-                        </ul>
-                    </nav> 
-                </header>
-            </div>
-            <!-- sidebar, nav inside document -->
-            <aside>
+        <!-- site header, nav between package docs -->
+        <div id="topbar">
+            <header>
                 <nav>
                     <ul>
-                        <!-- should autogen, for each # header in markdown? -->
-                        <li></li>
+                        <li><a href="#Morsel">Morsel</a></li>
+                        <li><a href="#Meddle">Meddle</a></li>
+                        <li><a href="#WebSockets">WebSockets</a></li>
+                        <li><a href="#HttpServer">HttpServer</a></li>
+                        <li><a href="#HttpParser">HttpParser</a></li>
+                        <li><a href="#HttpCommon">HttpCommon</a></li>
                     </ul>
-                </nav>
-            </aside>
-            <!-- document content -->
-            <article>
-                <div id="logo">
-                    <img src="img/morsel.png" width="100"/>
-                    <h1>Morsel.jl</h1> 
-                </div>
-                <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-                <h2>Header Level 2</h2>
-                           
-                <ol>
-                   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                   <li>Aliquam tincidunt mauris eu risus.</li>
-                </ol>
-
-                <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-                <h3>Header Level 3</h3>
-
-                <ul>
-                   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                   <li>Aliquam tincidunt mauris eu risus.</li>
-                </ul>
-
-                <pre><code>
-    using Morsel
-
-    app = Morsel.app()
-
-    route(app, GET | POST | PUT, "/") do req, res
-        "This is the root"
-    end
-
-    start(app, 8000) 
-                </code></pre>
-            </article>
-            <a href="https://github.com/you"><img style="z-index:101;position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+                </nav> 
+            </header>
         </div>
+        <!-- document content -->
+        <article id="Morsel">
+            {{morsel_content}}
+        </article>
+        <article id="Meddle">
+            {{meddle_content}}
+        </article>
+        <article id="WebSockets">
+            {{websockets_content}}
+        </article>
+        <article id="HttpServer">
+            {{httpserver_content}}
+        </article>
+        <article id="HttpParser">
+            {{httpparser_content}}
+        </article>
+        <article id="HttpCommon">
+            {{httpcommon_content}}
+        </article>
+    </div>
 
-        <script src="js/main.js"></script>
-        <!--
-        <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src='//www.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>
-            -->
-    </body>
+    <script src="js/main.js"></script>
+    <!--
+    <script>
+        var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        g.src='//www.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+    -->
+</body>
 </html>
