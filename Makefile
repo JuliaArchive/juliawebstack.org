@@ -1,7 +1,7 @@
 DOC_TEMPLATE=template.html
 DOC_TARGET=index.html
 
-all: deps clean Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
+all: clean Overview Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
 
 readmeurl = "https://raw.github.com/hackerschool/$(1).jl/master/docs/$(1).md"
 
@@ -15,11 +15,28 @@ define curlandcompile
 	fi)
 	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
 	curl -s $(call readmeurl,$(1)) \
-		| ve/bin/python -m markdown -x "codehilite(noclasses=True)" \
+		| python -m markdown -x "codehilite(noclasses=True)" \
 		> $(HTML_TMP)
 	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
 	rm -f $(HTML_TMP)
 endef
+
+#
+# $(1) the filepath inside the repo root
+# $(2) the template directive
+#
+define localcompile
+	$(shell if [ ! -f $(DOC_TARGET) ]; then
+		cp $(DOC_TEMPLATE) $(DOC_TARGET);
+	fi)
+	$(eval HTML_TMP := $(shell mktemp 'tmp.html.XXXXX'))
+	cat $(1) | python -m markdown -x "codehilite(noclasses=True)" > $(HTML_TMP)
+	sed -i '' -e "/$(2)/r $(HTML_TMP)" $(DOC_TARGET)
+	rm -f $(HTML_TMP)
+endef
+
+Overview:
+	$(call localcompile,docs/Overview.md,<!--!!!Overview_content-->)
 
 Morsel:
 	$(call curlandcompile,Morsel,<!--!!!Morsel_content-->)
@@ -38,10 +55,6 @@ HttpParser:
 
 HttpCommon:
 	$(call curlandcompile,HttpCommon,<!--!!!HttpCommon_content-->)
-
-deps:
-	PYTHONDONTWRITEBYTECODE= virtualenv ve
-	ve/bin/pip install -r requirements.txt
 
 clean:
 	rm -f tmp.html.*
