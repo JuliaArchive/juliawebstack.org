@@ -44,20 +44,14 @@
             <!--!!!Morsel_content-->
 <h1>Morsel</h1>
 <p>Morsel is a Sintra-like micro framework for declaring routes and handling requests.
-It is built on top of <a href="https://github.com/hackerschool/HttpServer.jl">HttpServer.jl</a>
-and <a href="https://github.com/hackerschool/Meddle.jl">Meddle.jl</a>.</p>
+It is built on top of HttpServer.jl and Meddle.jl.</p>
 <h2>Installation</h2>
-<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># in REQUIRE</span>
-Morsel
-
-<span style="color: #408080; font-style: italic"># in REPL</span>
-julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;Morsel&quot;</span>)
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;Morsel&quot;</span>)
 </pre></div>
 
 
 <h2>Example</h2>
-<p>Here is a brief example that will return a few different messages for different routes,
-if you run this and open <code>localhost:8000</code> you will see "This is the root" for GET, POST or PUT requests.
+<p>Here is a brief example that will return a few different messages for different routes.
 The line <code>get(app, "/about") do ...</code> is shorthand for only serving GET requests through that route.</p>
 <div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">using</span> Morsel
 
@@ -72,22 +66,24 @@ get(app, <span style="color: #BA2121">&quot;/about&quot;</span>) <span style="co
 <span style="color: #008000; font-weight: bold">end</span>
 
 start(app, <span style="color: #666666">8000</span>)
-</pre></div>        </article>
-        <article id="Meddle">
-            <!--!!!Meddle_content-->
-<h1>Meddle</h1>
-<p>Meddle is a middleware stack for use with <a href="https://github.com/hackerschool/HttpServer.jl">HttpServer.jl</a>.</p>
-<h2>Installation:</h2>
-<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># in REQUIRE</span>
-Meddle <span style="color: #666666">0.0.1</span>
-
-<span style="color: #408080; font-style: italic"># in REPL</span>
-julia<span style="color: #666666">&gt;</span> Pkg2<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;Meddle&quot;</span>)
 </pre></div>
 
 
-<h2>Example:</h2>
-<p>Define a 'stack' of middleware through which incoming <code>Requests</code> are processed:</p>
+<h3>Expected Behavior:</h3>
+<p>The server will run on <code>localhost:8000</code>.</p>
+<p>For GET, POST, and PUT requests for <code>/</code>, you will get "This is the root" as a response.
+For GET requests for <code>/about</code>, you will get "This app is running on Morsel".</p>        </article>
+        <article id="Meddle">
+            <!--!!!Meddle_content-->
+<h1>Meddle</h1>
+<p>Meddle is a middleware stack for use with HttpServer.jl.</p>
+<h2>Installation:</h2>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;Meddle&quot;</span>)
+</pre></div>
+
+
+<h2>Basic Example:</h2>
+<p>Define a 'stack' of middleware through which incoming <code>Request</code>s are processed:</p>
 <div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">using</span> HttpServer
 <span style="color: #008000; font-weight: bold">using</span> Meddle
 
@@ -111,18 +107,21 @@ If you want to write a web app in Julia that uses WebSockets, you'll need this p
 <p>This package works with <a href="https://github.com/hackerschool/HttpServer.jl">HttpServer.jl</a>,
 which is what you to set up a server that accepts HTTP(S) connections.</p>
 <p>As a first example, we can create a WebSockets echo server:</p>
-<p>~~~julia
-using HttpServer
-using WebSockets</p>
-<p>wsh = WebSocketHandler() do req,client
-    while true
-        msg = read(client)
-        write(client, msg)
-    end
-  end</p>
-<p>server = Server(wsh)
-run(server,8080)
-~~~</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">using</span> HttpServer
+<span style="color: #008000; font-weight: bold">using</span> WebSockets
+
+wsh <span style="color: #666666">=</span> WebSocketHandler() <span style="color: #008000; font-weight: bold">do</span> req,client
+        <span style="color: #008000; font-weight: bold">while</span> true
+            msg <span style="color: #666666">=</span> read(client)
+            write(client, msg)
+        <span style="color: #008000; font-weight: bold">end</span>
+      <span style="color: #008000; font-weight: bold">end</span>
+
+server <span style="color: #666666">=</span> Server(wsh)
+run(server,<span style="color: #666666">8080</span>)
+</pre></div>
+
+
 <p>This sets up a server running on localhost, port 8080.
 It will accept WebSockets connections.
 The function in <code>wsh</code> will be called once per connection; it takes over that connection.
@@ -139,9 +138,10 @@ and a <code>WebSocket</code> from <a href="https://github.com/hackerschool/WebSo
 <li><code>close</code> the connection</li>
 </ul>
 <h2>Installation/Setup</h2>
-<p>~~~julia
-julia&gt; Pkg.add("WebSockets")
-~~~</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;WebSockets&quot;</span>)
+</pre></div>
+
+
 <p>At this point, you can use the examples below to test that it all works.</p>
 <h2><a href="https://github.com/hackerschool/WebSockets.jl/blob/master/examples/chat.jl">Chat client/server example</a>:</h2>
 <ol>
@@ -151,18 +151,21 @@ julia&gt; Pkg.add("WebSockets")
 <li>You should see a basic IRC-like chat application</li>
 </ol>
 <h2>Echo server example:</h2>
-<p>~~~julia
-using HttpServer
-using WebSockets</p>
-<p>wsh = WebSocketHandler() do req,client
-    while true
-        msg = read(client)
-        write(client, msg)
-    end
-  end</p>
-<p>server = Server(wsh)
-run(server,8080)
-~~~</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">using</span> HttpServer
+<span style="color: #008000; font-weight: bold">using</span> WebSockets
+
+wsh <span style="color: #666666">=</span> WebSocketHandler() <span style="color: #008000; font-weight: bold">do</span> req,client
+        <span style="color: #008000; font-weight: bold">while</span> true
+            msg <span style="color: #666666">=</span> read(client)
+            write(client, msg)
+        <span style="color: #008000; font-weight: bold">end</span>
+      <span style="color: #008000; font-weight: bold">end</span>
+
+server <span style="color: #666666">=</span> Server(wsh)
+run(server,<span style="color: #666666">8080</span>)
+</pre></div>
+
+
 <p>To play with a WebSockets echo server, you can:</p>
 <ol>
 <li>Paste the above code in to the Julia REPL</li>
@@ -177,49 +180,51 @@ run(server,8080)
             <!--!!!HttpServer_content-->
 <h1>HttpServer</h1>
 <p>This is a basic, non-blocking HTTP server in Julia.</p>
-<p>You can write a basic application using just this
-if you're happy dealing with values representing HTTP requests and responses directly.
-For a higher-level view, you could use <a href="https://github.com/hackerschool/Meddle.jl">Meddle</a> or <a href="https://github.com/hackerschool/Morsel.jl">Morsel</a>.
-If you'd like to use WebSockets as well, you'll need to grab <a href="https://github.com/hackerschool/WebSockets.jl">WebSockets.jl</a>.</p>
+<p>You can write a web application using just this
+if you're happy dealing directly with values representing HTTP requests and responses.</p>
+<p>The <code>Request</code> and <code>Response</code> types come from <code>HttpCommon</code>; see that section for documentation.</p>
 <h2>Installation/Setup</h2>
-<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># in REQUIRE</span>
-HttpServer <span style="color: #666666">0.0.1</span>
-
-<span style="color: #408080; font-style: italic"># in REPL</span>
-julia<span style="color: #666666">&gt;</span> Pkg2<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;HttpServer&quot;</span>)
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;HttpServer&quot;</span>)
 </pre></div>
 
 
-<p>To make sure everything is working, you can <code>cd</code> into the <code>~/.julia/HttpServer.jl/</code> and run <code>julia examples/hello.jl</code>. If you open up <code>localhost:8000/hello/name/</code>, you should get a greeting from the server.</p>
+<h2>Testing Your Installation</h2>
+<ol>
+<li>Move to the <code>~/.julia/HttpServer.jl/</code> directory.</li>
+<li>Run <code>julia examples/hello.jl</code>.</li>
+<li>Open <code>localhost:8000/hello/name</code> in a browser.</li>
+<li>You should see a text greeting from the server in your browser.</li>
+</ol>
 <h2>Basic Example:</h2>
 <div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">using</span> HttpServer
 
+<span style="color: #408080; font-style: italic"># Julia&#39;s do syntax lets you more easily pass a function as an argument</span>
 http <span style="color: #666666">=</span> HttpHandler() <span style="color: #008000; font-weight: bold">do</span> req::Request, res::Response
+    <span style="color: #408080; font-style: italic"># if the requested path starts with `/hello/`, say hello</span>
+    <span style="color: #408080; font-style: italic"># otherwise, return a 404 error</span>
     Response( ismatch(r<span style="color: #BA2121">&quot;^/hello/&quot;</span>,req<span style="color: #666666">.</span>resource) <span style="color: #666666">?</span> string(<span style="color: #BA2121">&quot;Hello &quot;</span>, split(req<span style="color: #666666">.</span>resource,<span style="color: #BA2121">&#39;/&#39;</span>)[<span style="color: #666666">3</span>], <span style="color: #BA2121">&quot;!&quot;</span>) : <span style="color: #666666">404</span> )
 <span style="color: #008000; font-weight: bold">end</span>
 
+<span style="color: #408080; font-style: italic"># HttpServer supports setting handlers for particular events</span>
 http<span style="color: #666666">.</span>events[<span style="color: #BA2121">&quot;error&quot;</span>]  <span style="color: #666666">=</span> ( client, err ) <span style="color: #666666">-&gt;</span> println( err )
 http<span style="color: #666666">.</span>events[<span style="color: #BA2121">&quot;listen&quot;</span>] <span style="color: #666666">=</span> ( port )        <span style="color: #666666">-&gt;</span> println(<span style="color: #BA2121">&quot;Listening on </span><span style="color: #BB6688; font-weight: bold">$</span><span style="color: #BA2121">port...&quot;</span>)
 
-server <span style="color: #666666">=</span> Server( http )
-run( server, <span style="color: #666666">8000</span> )
+server <span style="color: #666666">=</span> Server( http ) <span style="color: #408080; font-style: italic">#create a server from your HttpHandler</span>
+run( server, <span style="color: #666666">8000</span> ) <span style="color: #408080; font-style: italic">#never returns</span>
 </pre></div>        </article>
         <article id="HttpParser">
             <!--!!!HttpParser_content-->
 <h1>HttpParser</h1>
-<p>This module provides access to Joyent's http-parser library: <a href="https://github.com/joyent/http-parser">http-parser</a></p>
+<p>This module provides a Julia wrapper around Joyent's http-parser library: <a href="https://github.com/joyent/http-parser">http-parser</a></p>
+<p>You can look at the code of HttpSever.jl as an example of using HttpParser.jl.</p>
 <h2>Installation</h2>
-<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># in REQUIRE</span>
-HttpParser <span style="color: #666666">0.0.1</span>
-
-<span style="color: #408080; font-style: italic"># in REPL</span>
-julia<span style="color: #666666">&gt;</span> Pkg2<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;HttpParser&quot;</span>)
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;HttpParser&quot;</span>)
 </pre></div>
 
 
-<h2>Requirements</h2>
-<p><code>libhttp-parser</code> needs to be available as a shared library. It should be built automatically by <code>Pkg2</code>.</p>
-<h3>Installing libhttp-parser as a shared library manually</h3>
+<h3>Requirements</h3>
+<p><code>libhttp-parser</code> needs to be available as a shared library. It should be built automatically by <code>Pkg</code>.</p>
+<h4>Installing libhttp-parser as a shared library manually</h4>
 <ol>
 <li>clone https://github.com/joyent/http-parser</li>
 <li><code>cd http-parser</code></li>
@@ -228,14 +233,14 @@ julia<span style="color: #666666">&gt;</span> Pkg2<span style="color: #666666">.
 </ol>
 <h2>Test</h2>
 <ol>
-<li>cd back to HttpParser.jl</li>
-<li><code>julia src/Test.jl</code></li>
+<li>Move to <code>~/.julia/HttpParser/</code></li>
+<li>Run <code>julia src/Test.jl</code></li>
 <li>Expect to see text indicating that all assertions have passed.</li>
 </ol>        </article>
         <article id="HttpCommon">
             <!--!!!HttpCommon_content-->
 <h1>HttpCommon</h1>
-<p>This package provides types and helper functions for dealing with the HTTP protocl in Julia.</p>
+<p>This package provides types and helper functions for dealing with the HTTP protocol.</p>
 <ul>
 <li>types to represent <code>Request</code>s, <code>Response</code>s, and <code>Headers</code></li>
 <li>a dictionary of <code>STATUS_CODES</code>
@@ -245,16 +250,100 @@ julia<span style="color: #666666">&gt;</span> Pkg2<span style="color: #666666">.
 <li>a pair of functions to <code>encodeURI</code> and <code>decodeURI</code></li>
 <li>a function to turn a query string from a url into a <code>Dict{String,String}</code></li>
 </ul>
-<h1>Installation</h1>
-<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># in REQUIRE</span>
-HttpCommon <span style="color: #666666">0.0.1</span>
-
-<span style="color: #408080; font-style: italic"># in REPL</span>
-julia<span style="color: #666666">&gt;</span> Pkg2<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;HttpCommon&quot;</span>)
+<h2>Installation</h2>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">julia<span style="color: #666666">&gt;</span> Pkg<span style="color: #666666">.</span>add(<span style="color: #BA2121">&quot;HttpCommon&quot;</span>)
 </pre></div>
 
 
-<p>You will need to have Julia installed from source because this code has not been tested in v0.1 at all and probably uses features not found there.</p>        </article>
+<h2>Request</h2>
+<p>A <code>Request</code> represents an HTTP request sent by a client to a server. </p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">type</span><span style="color: #0000FF; font-weight: bold"> Request</span>
+    method::String
+    resource::String
+    headers::Headers
+    data::String
+<span style="color: #008000; font-weight: bold">end</span>
+</pre></div>
+
+
+<ul>
+<li><code>method</code> is an HTTP methods string ("GET", "PUT", etc)</li>
+<li><code>resource</code> is the url resource requested ("/hello/world")</li>
+<li><code>headers</code> is a <code>Dict</code> of field name <code>String</code>s to value <code>String</code>s</li>
+<li><code>data</code> is the data in the request</li>
+</ul>
+<h2>Response</h2>
+<p>A <code>Response</code> represents an HTTP response sent to a client by a server.</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">type</span><span style="color: #0000FF; font-weight: bold"> Response</span>
+    status::<span style="color: #B00040">Int</span>
+    headers::Headers
+    data::HttpData
+    finished::<span style="color: #B00040">Bool</span>
+<span style="color: #008000; font-weight: bold">end</span>
+</pre></div>
+
+
+<ul>
+<li><code>status</code> is the HTTP status code (see <code>STATUS_CODES</code>) [default: <code>200</code>]</li>
+<li><code>headers</code> is the <code>Dict</code> of headers [default: <code>headers()</code>, see Headers below]</li>
+<li><code>data</code> is the response data (as a <code>String</code> or <code>Array{Uint8}</code>) [default: <code>""</code>]</li>
+<li><code>finished</code> is <code>true</code> if the <code>Reponse</code> is valid, meaning that it can be converted to an actual HTTP response [default: <code>false</code>]</li>
+</ul>
+<p>There are a variety of constructors for <code>Response</code>, which set sane defaults for unspecified values.</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">Response([statuscode::<span style="color: #B00040">Int</span>])
+Response(statuscode::<span style="color: #B00040">Int</span>,[h::Headers],[d::HttpData])
+Response(d::HttpData,[h::Headers])
+</pre></div>
+
+
+<h2>Headers</h2>
+<p><code>Headers</code> is a type alias for <code>Dict{String,String}</code>.
+There is a default constructor, <code>headers</code>, to produce a reasonable default set of headers.
+The defaults are as follows:</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">[ <span style="color: #BA2121">&quot;Server&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #BA2121">&quot;Julia/</span><span style="color: #BB6688; font-weight: bold">$</span><span style="color: #BA2121">VERSION&quot;</span>,
+  <span style="color: #BA2121">&quot;Content-Type&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #BA2121">&quot;text/html; charset=utf-8&quot;</span>,
+  <span style="color: #BA2121">&quot;Content-Language&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #BA2121">&quot;en&quot;</span>,
+  <span style="color: #BA2121">&quot;Date&quot;</span> <span style="color: #666666">=&gt;</span> RFC1123_datetime()]
+</pre></div>
+
+
+<p>The last setting, <code>"Date"</code> uses another HttpCommon function:</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">RFC1123_datetime([CalendarTime])
+</pre></div>
+
+
+<p>When an argument is not provided, the current time (<code>now()</code>) is used.
+RFC1123 describes the correct format for putting timestamps into HTTP headers.</p>
+<h2>STATUS_CODES</h2>
+<p><code>STATUS_CODES</code> is a <code>const</code> <code>Dict{Int,String}</code>.
+It maps all the status codes defined in RFC's to their descriptions.</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%">STATUS_CODES[<span style="color: #666666">200</span>] <span style="color: #408080; font-style: italic">#=&gt; &quot;OK&quot;</span>
+STATUS_CODES[<span style="color: #666666">404</span>] <span style="color: #408080; font-style: italic">#=&gt; &quot;Not Found&quot;</span>
+STATUS_CODES[<span style="color: #666666">418</span>] <span style="color: #408080; font-style: italic">#=&gt; &quot;I&#39;m a teapot&quot;</span>
+STATUS_CODES[<span style="color: #666666">500</span>] <span style="color: #408080; font-style: italic">#=&gt; &quot;Internal Server Error&quot;</span>
+</pre></div>
+
+
+<h2>HttpMethodBitmasks</h2>
+<p>HttpCommon provides <code>Int</code> bitmasks to represent the HTTP request methods
+(GET, POST, PUT, UPDATE, DELETE, OPTIONS, HEAD).
+There are two dictionaries, <code>HttpMethodNameToBitmask</code> and <code>HttpMethodBitmaskToName</code>, to allow for mapping back and forth from <code>String</code> names to <code>Int</code> bitmasks.</p>
+<p>The purpose of having bitmasks is that you can write <code>GET | POST | UPDATE</code> and end up with a bitmask representing the union of those HTTP methods.</p>
+<h2>escapeHTML(i::String)</h2>
+<p><code>escapeHTML</code> will return a new <code>String</code> with the following characters escaped: <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>"</code>.</p>
+<h2>encodeURI(decoded::String)</h2>
+<p><code>encodeURI</code> returns a new, URI-safe string.
+It escapes all non-URI characters (only letters, digits, <code>-</code>, <code>_</code> , <code>.</code>, and <code>~</code> are allowed) in the standard way.</p>
+<h2>decodeURI(encoded::String)</h2>
+<p><code>decodeURI</code> returns a new <code>String</code> with all the unsafe characters returned to their original meanings.
+It works with the output of <code>encodeURI</code> as well as other standard URI encoders.</p>
+<h2>parsequerystring(query::String)</h2>
+<p><code>parsequerystring</code> takes a query string (as from a URL) and returns a <code>Dict{String,String}</code> representing the same data.</p>
+<p>An example:</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%"> q <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;foo=bar&amp;baz=%3Ca%20href%3D%27http%3A%2F%2Fwww.hackershool.com%27%3Ehello%20world%21%3C%2Fa%3E&quot;</span>
+parsequerystring(q)
+<span style="color: #408080; font-style: italic"># =&gt; [&quot;foo&quot;=&gt;&quot;bar&quot;,&quot;baz&quot;=&gt;&quot;&lt;a href=&#39;http://www.hackershool.com&#39;&gt;hello world!&lt;/a&gt;&quot;]</span>
+</pre></div>        </article>
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
