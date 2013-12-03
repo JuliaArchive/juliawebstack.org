@@ -1,7 +1,7 @@
 DOC_TEMPLATE=template.html
 DOC_TARGET=index.html
 
-all: clean Overview Morsel Meddle WebSockets HttpServer HttpParser HttpCommon
+all: clean Overview Morsel Meddle WebSockets HttpServer HttpParser HttpCommon versionassets
 
 readmeurl = "https://raw.github.com/hackerschool/$(1).jl/master/docs/$(1).md"
 
@@ -35,6 +35,10 @@ define localcompile
 	rm -f $(HTML_TMP)
 endef
 
+define version
+	sed -i '' -e "s^<!--!!!VERSION:$(shell echo $(1) | tr "/" "\\/")-->^v=$(shell stat -t "%s" -f "%m" $(1))^" $(DOC_TARGET)
+endef
+
 Overview:
 	$(call localcompile,docs/Overview.md,<!--!!!Overview_content-->)
 
@@ -55,6 +59,10 @@ HttpParser:
 
 HttpCommon:
 	$(call curlandcompile,HttpCommon,<!--!!!HttpCommon_content-->)
+
+versionassets:
+	$(call version,css/main.css)
+	$(call version,js/main.js)
 
 clean:
 	rm -f tmp.html.*
