@@ -1,6 +1,6 @@
 # Julia Webstack documentation
 
-This is the template and build script for [juliawebstack.com][1]
+This is the template and build script for [juliawebstack.org][1]
 
 ## Dependencies
 
@@ -16,6 +16,6 @@ pip install pygments markdown
 
 Build the entire site with `make`.
 
-[1]: http://juliawebstack.com
+[1]: http://juliawebstack.org
 [2]: http://pygments.org/
 [3]: http://pythonhosted.org/Markdown/
